@@ -20,4 +20,8 @@ from enroll import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.add_show,name='add_show'),
+    path('delete/<int:id>/',views.delete_data,name="delete-data"),
+     path('<int:id>/',views.update_data,name="updated-data")
+
+
 ]

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 
 from .models import User
 from .forms import StudentsRegisteration
@@ -19,4 +19,24 @@ def add_show(request):
     else: 
         fm=StudentsRegisteration()
     stud=User.objects.all()
-    return render(request,'enroll/add_show.html',{'form':fm, 'stud':stud})
+    # print(stud)
+    return render(request,'enroll/add_show.html',{'form':fm,'stu':stud}) 
+
+    #this function for delete the data
+def delete_data(request, id):
+    if request.method == 'POST':
+        pi=User.objects.get(pk=id)
+        pi.delete()
+        return  HttpResponseRedirect('/')
+
+#this function will update /edit
+def update_data(request,id):
+    if request.method == 'POST':
+        pi = User.objects.get(pk=id)
+        fm=StudentsRegisteration(request.POST,instance=pi)
+        if fm.is_valid():
+            fm.save()
+    else:
+        pi = User.objects.get(pk=id)
+        fm=StudentsRegisteration(instance=pi)
+    return render(request,'enroll/update_students.html',{'form':fm})
